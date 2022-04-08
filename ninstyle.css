@@ -12,7 +12,7 @@ body{
     -ms-user-select: none;
 }
 .titlecoolle{
-    color: #c02;
+    color: #cc1122;
 }
 ul {
     list-style-type: none;
@@ -38,7 +38,7 @@ ul {
     background-color: #111;
 }
 .active{
-  background-color: #c02;
+  background-color: #cc1122;
 }
 .center{
   text-align: center;
