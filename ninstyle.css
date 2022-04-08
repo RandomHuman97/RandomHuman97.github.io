@@ -6,6 +6,10 @@ body{
 }
 .title{
     font-size: 150%;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
 }
 .titlecoolle{
     color: #c02;
@@ -41,5 +45,9 @@ ul {
   padding: 10%;
 }
 a{
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
   color:darkgoldenrod;
 }
