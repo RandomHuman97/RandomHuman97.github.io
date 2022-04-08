@@ -1,4 +1,4 @@
 <h3>Paste into bookmarklet address bar using edit</h3>
 <h7>javascript:var grid  = ["*","*","*","*","*","*","*","*","*"]; const opt = ["0", "1" , "2", "3", "4", "5", "6", "7", "8"]; var pt = ("O"); var win = 0; function wzck (wz,wzk,wzr){ if (grid[wz]+grid[wzk]+grid[wzr]==pt+pt+pt) { alert (pt+" Wins!"); win=1; } } function play() { while(win==0) { var pLi = prompt ("Tic Tac Toe Version 3 By >sl\nPlayer Turn:"+pt+"\n"+grid[0]+" 0 "+grid[1]+" 1 "+ grid[2]+" 2 "+"\n"+grid[3]+" 3 "+grid[4]+" 4 "+grid[5]+" 5 "+"\n"+grid[6]+" 6 "+grid[7]+" 7 "+grid[8]+" 8 "); if (opt.includes(pLi)){ if (grid[parseInt(pLi)]=="*"){ grid[parseInt(pLi)]=pt; if (pt=="O"){ pt="X"; } else{ pt="O"; } } else{ alert("Square Already Chosen!"); } } else{ alert("Invalid Square!"); } wzck(0,1,2); wzck(3,4,5); wzck(6,7,8); wzck(0,3,6); wzck(1,4,7); wzck(2,5,8); wzck(0,4,8); wzck(2,4,6); } throw new Error("finished game!"); } play()</h1>
 <br>
-<a href="projects.html">Back to Random's site.</a>
+<a href="projects2.html">Back to Random's site.</a>

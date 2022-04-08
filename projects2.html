@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <link href="extra.css" rel="stylesheet">
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
@@ -10,7 +11,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    <link href="extra.css" rel="stylesheet">
     <style type="text/css">
       body { background: #262626 !important; }
    </style>
@@ -22,10 +22,10 @@
           <a class="navbar-brand" href="#">
             <img src="android-chrome-192x192.png" alt="Avatar Logo" style="width:40px;" > </a>
           <li class="nav-item">
-            <a class="nav-link active" href="index.html">About</a>
+            <a class="nav-link" href="index.html">About</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="projects2.html">Projects</a>
+            <a class="nav-link active" href="projects2.html">Projects</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="music2.html">Music</a>
@@ -36,16 +36,25 @@
         </ul>
       </div>
     </nav>
-      <div class="container p-5 my-5 bg-danger text-white">
-          <h1 class="display-2 text-center">Greetings!</h1>
-          <p class="text-center">Привет!</p>
-          <p class="text-center">I am random-human.</p>
-          <p class="text-center">I write music, program, and edit videos for fun.</p>
-          <p class="text-center">nothing much</p>
-          <br>
-          <br>
-          <br>
-          <p class="text-center"><small>no seriously</small></p>
-      </div>
+    <div class="container border p-4 my-5 text-white">
+        <h1 class="display-1 text-center">Projects</h1>
+        <h1 class="display-4 text-center">Here are some of my programming projects.</h1>
+    </div>
+    <br>
+        <div class="container p-5 my-5 bg-danger text-white d-grid">
+        <h1 class="display-4 text-center">Tic Tac Toe</h1>
+        <p class="text-center">A little Tic Tac Toe game I wrote for javascript bookmarklet.</p>
+        <div class="d-grid col-2 mx-auto">
+            <a href="mine.html" class="btn btn-danger border btn-block text-center">Link to Project</a>
+        </div>
+    </div>
+    <div class="container p-5 my-5 bg-danger text-white d-grid">
+        <h1 class="display-4 text-center">Calculator</h1>
+        <p class="text-center">A basic calculator I made for javascript bookmarklets.</p>
+        <p class="text-center">(they're amazing)</p>
+        <div class="d-grid col-2 mx-auto">
+            <a href="calculator.html" class="btn btn-danger border btn-block text-center">Link to Project</a>
+        </div>
+    </div>
   </body>
 </html>
