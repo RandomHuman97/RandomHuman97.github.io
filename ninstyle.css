@@ -1,0 +1,45 @@
+body{
+    background-color: #222;
+    font-family: 'Comforta', monospace;
+    color: aliceblue;
+    font-size: 120%;
+}
+.title{
+    font-size: 150%;
+}
+.titlecoolle{
+    color: #c02;
+}
+ul {
+    list-style-type: none;
+    margin: 0;
+    overflow: hidden;
+    background-color: #333;
+    border-radius: 15px;
+  }
+  
+  li {
+    float: left;
+  }
+  
+  li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 19px;
+    text-decoration: none;
+  }
+  
+  li a:hover {
+    background-color: #111;
+}
+.active{
+  background-color: #c02;
+}
+.center{
+  text-align: center;
+  padding: 10%;
+}
+a{
+  color:darkgoldenrod;
+}
