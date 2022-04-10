@@ -1,0 +1,14 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "pwa-chrome",
+            "request": "launch",
+            "name": "Open nononsense.html",
+            "file": "/media/nick/12800A3C800A26B7/Users/nicktop/Documents/webtemp/nononsense.html"
+        }
+    ]
+}
