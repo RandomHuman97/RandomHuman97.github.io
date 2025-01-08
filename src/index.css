@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body{
+  background-color: #2C3333;
+}
+.boing {
+  transition: transform 0.2s ease-in-out; 
+}
+
+.boing:hover {
+  transform: scale(1.05); 
+}
