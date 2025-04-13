@@ -1,10 +1,9 @@
-import { useState } from 'react'
-import Navbar from './components/navbar'
+import Navbar from '../../components/navbar'
 import Hero from './components/hero'
 import Projects from './components/projects'
 
 
-function App() {
+function Home() {
 
   return (
 <div class="bg-hawk font-inter">
@@ -15,4 +14,4 @@ function App() {
   )
 }
 
-export default App
+export default Home

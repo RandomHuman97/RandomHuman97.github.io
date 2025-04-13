@@ -1,0 +1,46 @@
+<!--How I threw together this blog with React, Tailwind, and some DIY metadata handling--> 
+<h2>Well, that was a mess.</h2>
+<p>All I wanted was a simple blog to jot down my thoughts and stuff I've learned.</p>
+<p>But, instead of actually planning things out and setting up proper infrastructure, I ended up throwing everything together in one chaotic all-nighter.</p>
+<p>Having gone through the nightmare of deploying sites before (and dealing with all the headaches that come with it), I really wanted to keep this site as lightweight as possible.</p>
+<h2>The Requirements</h2>
+<p>I gave myself a quick list of requirements to guide my frantic development session.</p>
+<ul>
+    <li>- A main page</li>
+    <li>- A section to show off my projects</li>
+    <li>- Some way to view blog posts (with some basic formatting, at least)</li>
+</ul>
+
+<p>The thought of dealing with the bloat of a full-fledged CMS? Nope.</p>
+<i>All I wanted was something simple to write blog posts. How hard can that be?</i>
+<br/>
+<p>Since I'm already familiar with React and enjoy working with JSX, I figured that'd be the way to go. Now, the question was: what should I use to display and format these blog posts?</p>
+<h2>(Maybe) Reinventing the Wheel?</h2>
+<p>As I thought more about it, I realized something: this problem is eerily familiar to something I already use—<b>HTML!</b> After all, it's called Hyper Text <b>Markup</b> Language.</p>
+
+<p>Then I stumbled across MDX. It seemed pretty neat <i>(no XML!!)</i>, but it felt very tailored to the Next.js crowd <i>(boo Vercel!!)</i>.</p>
+
+<p>But here's the thing—I didn't want to create a new component for each blog post, and I also wanted to include metadata (like the post's description and date).</p>
+
+<p>Fortunately, Node.js has this super handy tool for running scripts. So, I figured I could write a simple script that reads through every “raw” HTML file, grabs the creation date, and extracts the metadata from a comment (hacky, but it works).</p>
+<pre><code>
+files.forEach(file => {
+    if (file.endsWith('.html')) {
+        const fullPath = path.join(postsDir, file);
+        const stats = fs.statSync(fullPath);
+        
+        const firstLine = getFirstLineOfFile(fullPath);
+
+        metadata.push({
+        filename: file,
+        title: file.replace('.html', ''),
+        date: stats.ctime.toISOString(),
+        firstLine: firstLine, 
+        });
+    }
+});
+</code></pre>
+
+<p>Now, here's the thing: I use Tailwind, and I want my “barebones” HTML to at least look decent. Fortunately, Tailwind has a fantastic tool for this: <b>prose</b>. Essentially (at least, as far as I understand), it's a set of styles that help make vanilla HTML documents look sleek and polished.</p>
+
+<p>And voila—just like that, I had a simple blog that didn't need to run 14 microservices!</p>

@@ -11,11 +11,13 @@ export default {
       },
       colors: {
         'darkest':'#2C3333',
-         'darker': '#395B64:', 
+         'darker': '#395B64', 
          'dark': ' #A5C9CA',
          'light': '#E7F6F2'
       }
     },
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/typography'),
+  ]
 }
