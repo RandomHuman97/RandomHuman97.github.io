@@ -37,8 +37,6 @@ jobs:
           node-version: '22.14.0' # Or your preferred Node.js version
       - name: Install dependencies
         run: npm install
-      - name: Run build script (before build)
-        run: npm run build:before # Replace with your actual script name
       - name: Build with Node.js
         run: npm run build # Replace with your actual build script name
       - name: Setup Pages
