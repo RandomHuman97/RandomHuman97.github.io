@@ -10,11 +10,9 @@ const BlogList = () => {
       const response = await fetch('/postsMetadata.json');
       const metadata = await response.json();
 
-      // Map the metadata to the full post list, including the path
       const postList = metadata.map((meta, index) => ({
         id: index + 1,
         title: meta.title,
-        path: `/posts/${meta.filename}`,
         date: meta.date,
         firstLine: meta.firstLine
       }));
@@ -60,7 +58,7 @@ const BlogList = () => {
         {filteredPosts.map((post) => (
             <a 
             className='p-5'
-            href={"posts/"+post.title}
+            href={"#posts/"+post.title}
             key={post.id}
           >
           <div

@@ -9,10 +9,10 @@ function Navbar() {
           <a href="/" className="text-darker hover:text-darkest">Home</a>
         </li>
         <li>
-          <a href="/posts" className="text-darker hover:text-darkest">Posts</a>
+          <a href="/#posts" className="text-darker hover:text-darkest">Posts</a>
         </li>
         <li>
-          <a href="/contact" className="text-darker hover:text-darkest">Contact</a>
+          <a href="/#contact" className="text-darker hover:text-darkest">Contact</a>
         </li>
       </ul>
     </nav>

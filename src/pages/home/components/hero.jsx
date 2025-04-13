@@ -8,7 +8,7 @@ function Hero() {
         <p className="text-lg mb-8 ">
           I'm a developer with a passion for low level, backend, and frontend development. 
         </p>
-        <a href="#projects">
+        <a href="#">
           <button className="hover:bg-darker hover:text-white shadow-xl bg-light text-darker px-6 py-3 rounded-full  transition ">
             View Portfolio
           </button>
