@@ -5,10 +5,7 @@ import PostRender from './components/postrender';
 const RenderPost = () => {
   const post = useParams().postName;
   return (
-    <div>
-    <Navbar/>
     <PostRender  postName={post}/>
-    </div>
   );
 };
 

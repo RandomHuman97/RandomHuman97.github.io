@@ -7,7 +7,6 @@ function Home() {
 
   return (
 <div class="bg-hawk font-inter">
-  <Navbar/>
   <Hero/>
   <Projects/>
 </div>

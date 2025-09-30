@@ -1,37 +1,55 @@
 const fs = require('fs');
 const path = require('path');
+
 const postsDir = path.join(__dirname, 'public/rawposts');
-
 const outputFile = path.join(__dirname, 'public/postsMetadata.json');
-// get all posts
+
 const getPostMetadata = () => {
-  const files = fs.readdirSync(postsDir);
   const metadata = [];
-  
-  files.forEach(file => {
-    if (file.endsWith('.html')) {
-      const fullPath = path.join(postsDir, file);
-      const stats = fs.statSync(fullPath);
-      
-      const firstLine = getFirstLineOfFile(fullPath);
 
-      metadata.push({
-        filename: file,
-        title: file.replace('.html', ''),
-        date: stats.ctime.toISOString(),
-        firstLine: firstLine, 
-      });
-    }
-  });
+  // Recursive walk
+  const walk = (dir) => {
+    const entries = fs.readdirSync(dir, { withFileTypes: true });
 
+    entries.forEach((entry) => {
+      const fullPath = path.join(dir, entry.name);
+
+      if (entry.isDirectory()) {
+        walk(fullPath);
+      } else if (entry.isFile() && entry.name.endsWith('.html')) {
+        const relative = path.relative(postsDir, fullPath);
+        const parts = relative.split(path.sep);
+        // Expected format: [year, month, day, filename.html]
+        if (parts.length >= 4) {
+          const [year, month, day, filename] = parts;
+          const title = filename.replace(/\.html$/, '');
+          const firstLine = getFirstLineOfFile(fullPath);
+
+          const isoDate = new Date(
+            Number(year),
+            Number(month) - 1,
+            Number(day)
+          ).toISOString();
+
+          metadata.push({
+            path: relative.replace(/\\/g, "/").split(".html")[0].replaceAll("/", "-"), // normalized path for cross-platform
+            title,
+            date: isoDate,
+            firstLine,
+          });
+        }
+      }
+    });
+  };
+
+  walk(postsDir);
   return metadata;
 };
 
 const getFirstLineOfFile = (filePath) => {
   const fileContent = fs.readFileSync(filePath, 'utf-8');
   const firstLine = fileContent.split('\n')[0];
-
-  const cleanLine = firstLine.trim().replace(/<!--(.*?)-->/g, "$1"); //remove comment from first line
+  const cleanLine = firstLine.trim().replace(/<!--(.*?)-->/g, "$1"); // remove HTML comments
   return cleanLine || firstLine.trim();
 };
 

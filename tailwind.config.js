@@ -11,7 +11,8 @@ export default {
       },
       colors: {
         'darkest':'#2C3333',
-         'darker': '#395B64', 
+         'darker': '#395B64',
+         'darke' : '#5e868f', 
          'dark': ' #A5C9CA',
          'light': '#E7F6F2'
       }

@@ -1,14 +1,14 @@
 [
   {
-    "filename": "Another Post.html",
-    "title": "Another Post",
-    "date": "2025-04-07T03:50:37.531Z",
-    "firstLine": "I love posts, see all of this is done in an html comment which is veryyyy hacky but we ball"
+    "path": "2025-8-15-Making This Blog",
+    "title": "Making This Blog",
+    "date": "2025-08-15T04:00:00.000Z",
+    "firstLine": "How I threw together this mess of a blog"
   },
   {
-    "filename": "Making This Blog.html",
-    "title": "Making This Blog",
-    "date": "2025-04-07T03:50:14.656Z",
-    "firstLine": "How I threw together this blog with React, Tailwind, and some DIY metadata handling"
+    "path": "2025-9-30-Another Post",
+    "title": "Another Post",
+    "date": "2025-09-30T04:00:00.000Z",
+    "firstLine": "I don't have any more posts right now so I'll just use this as a blank thing so it doesn't look too ugly."
   }
 ]

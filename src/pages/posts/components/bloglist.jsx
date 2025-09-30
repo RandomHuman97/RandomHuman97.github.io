@@ -14,7 +14,8 @@ const BlogList = () => {
         id: index + 1,
         title: meta.title,
         date: meta.date,
-        firstLine: meta.firstLine
+        firstLine: meta.firstLine,
+        path: meta.path,
       }));
 
       setPosts(postList);
@@ -58,7 +59,7 @@ const BlogList = () => {
         {filteredPosts.map((post) => (
             <a 
             className='p-5'
-            href={"#posts/"+post.title}
+            href={"#posts/"+post.path}
             key={post.id}
           >
           <div
