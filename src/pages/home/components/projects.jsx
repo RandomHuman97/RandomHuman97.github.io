@@ -13,7 +13,7 @@ const projects = [
     title: "Hack Forsyth 2025",
     description: "Created the website and backend registration system for the Hack Forsyth 2025 hackathon.",
     image: "/assets/hackforsyth.png",
-    url: "https://project1.com",
+    url: "https://hackforsyth.com",
     tags: ["React", "Micronaut", "Java"],
   },
   {
