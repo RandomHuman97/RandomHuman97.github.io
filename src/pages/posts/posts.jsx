@@ -1,4 +1,3 @@
-import Navbar from "../../components/navbar"
 import BlogList from "./components/bloglist"
 
 function Posts() {

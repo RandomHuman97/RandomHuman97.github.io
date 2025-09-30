@@ -6,6 +6,7 @@ import "./index.css"
 import Posts from "./pages/posts/posts";
 import RenderPost from "./pages/renderpost/renderpost";
 import Navbar from "./components/navbar";
+import Contact from "./pages/contact/contact";
 const root = document.getElementById("root");
 
 ReactDOM.createRoot(root).render(
@@ -16,6 +17,7 @@ ReactDOM.createRoot(root).render(
       <Route path="/" element={<Home/>} />
       <Route path="/posts" element={<Posts/>} />
       <Route path="/posts/:postName" element={<RenderPost />} />
+      <Route path="/contact" element={<Contact/>} />
     </Routes>
   </HashRouter>
   </>

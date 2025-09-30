@@ -38,7 +38,7 @@ const BlogList = () => {
     });
 
   return (
-    <section className="bg-dark text-darkest p-12 flex flex-col justify-center max-w-5xl mx-auto mt-5 rounded-2xl">
+    <section className="bg-dark text-darkest p-12 flex flex-col justify-center max-w-5xl mx-auto mt-5 rounded-3xl">
       <div className="relative w-full mb-10">
         <div className="absolute inset-y-0 left-0 flex items-center pl-4">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
