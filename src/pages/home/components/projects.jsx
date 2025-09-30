@@ -1,26 +1,24 @@
 import React, { useState } from 'react';
 
 const projects = [
+
   {
-    id: 1,
-    title: "Hack Forsyth Website",
-    description: "A brief description of Project 1",
-    image: "/path/to/image1.jpg",
-    url: "https://project1.com",
-    tags: ["React", "IoT", ""],
-  },
-  {
-    id: 2,
     title: "ESP 32 Tetris",
     description: "A tetris game and board powered by ESP32",
     image: "/assets/esp32tetris.png",
-    url: "https://project2.com",
+    url: "https://github.com/RandomHuman97/Esp32-Tetris",
     tags: ["C++", "C", "Embedded"],
   },
+    {
+    title: "Hack Forsyth 2025",
+    description: "Created the website and backend registration system for the Hack Forsyth 2025 hackathon.",
+    image: "/assets/hackforsyth.png",
+    url: "https://project1.com",
+    tags: ["React", "Micronaut", "Java"],
+  },
   {
-    id: 3,
     title: "BusyMap",
-    description: "A room occupancy analyzer using IoT",
+    description: "A room occupancy analyzer using IoT. Already implemented in a public library, looking to expand to more locations.",
     image: "/assets/bmap.png",
     url: "https://busymap.org",
     tags: ["React", "IoT", "Embedded", "Java", "Spring Boot"],
@@ -88,8 +86,8 @@ function Projects() {
       <div className="columns-1 sm:columns-2 lg:columns-3 gap-4 w-full space-y-4">
         {filteredProjects.map((project) => (
           <div
-            key={project.id}
-            className="bg-light rounded-2xl p-5 shadow-xl break-inside-avoid"
+            key={project.title}
+            className="bg-light rounded-2xl p-5 shadow-xl break-inside-avoid  hover:outline outline-12 outline-darke transition "
           >
             <img
               src={project.image}

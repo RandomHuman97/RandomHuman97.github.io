@@ -6,10 +6,10 @@ import Projects from './components/projects'
 function Home() {
 
   return (
-<div class="bg-hawk font-inter">
+<>
   <Hero/>
   <Projects/>
-</div>
+</>
   )
 }
 
