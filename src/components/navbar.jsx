@@ -1,5 +1,3 @@
-import React from 'react';
-
 function Navbar() {
   return (
     <nav className="bg-light p-[25px] flex justify-between rounded-3xl mt-5 items-center max-w-5xl mx-auto shadow-xl"> 
@@ -10,6 +8,16 @@ function Navbar() {
         </li>
         <li>
           <a href="/#posts" className="text-darker hover:text-darkest">Posts</a>
+        </li>
+
+        <li>
+          <a
+            href="/resume.pdf"
+            download
+            className="text-darker hover:text-darkest"
+          >
+            Resume
+          </a>
         </li>
         <li>
           <a href="/#contact" className="text-darker hover:text-darkest">Contact</a>
