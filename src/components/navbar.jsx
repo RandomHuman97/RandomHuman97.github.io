@@ -12,7 +12,7 @@ function Navbar() {
 
         <li>
           <a
-            href="/resume.pdf"
+            href="/assets/resume.pdf"
             download
             className="text-darker hover:text-darkest"
           >

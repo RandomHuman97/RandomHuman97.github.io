@@ -1,5 +1,17 @@
 const awards = [
   {
+    title: "Top 1.4% - High School Bracket",
+    location: "NCL Spring 2026 Individual Game",
+    meta: ["19th / 1392 Participants"],
+    year: '2026'
+  },
+  {
+    title: "Top 1.3% - Standard Bracket",
+    location: "NCL Spring 2026 Individual Game ",
+    meta: ["90th / 7011 Participants"],
+    year: '2026'
+  },
+  {
     title: '1st - Cybersecurity',
     location: 'TSA Southern Leadership Conference',
     year: '2026',
@@ -70,6 +82,11 @@ function Awards() {
                   <article className="h-full rounded-2xl bg-light p-5 text-left shadow-xl transition hover:outline outline-12 outline-darke">
                     <h3 className="text-lg font-bold leading-snug text-darkest">{award.title}</h3>
                     <p className="mt-2 text-sm leading-relaxed text-darkest/75">{award.location}</p>
+                    {award.meta && award.meta.map((m, index) => (
+                      <p key={index} className="mt-1 text-xs leading-relaxed text-darkest/50">
+                        {m}
+                      </p>
+                    ))}
                   </article>
                 </li>
               ))}

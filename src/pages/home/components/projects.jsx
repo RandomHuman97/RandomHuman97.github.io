@@ -3,15 +3,30 @@ import React, { useState } from 'react';
 const projects = [
 
   {
+    title: "Soccer with Planetary Physics",
+    description: "A soccer game built in raylib with planetary / n-body physics.",
+    image: "/assets/soccer.png",
+    tags: ["C", "C++", "Raylib", "Low-Level Networking"],
+  },
+  {
     title: "ESP 32 Tetris",
-    description: "A tetris game and board powered by ESP32",
+    description: "A tetris game and board powered by the ESP32 microcontroller.",
     image: "/assets/esp32tetris.png",
     url: "https://github.com/RandomHuman97/Esp32-Tetris",
     tags: ["C++", "C", "Embedded"],
   },
+  {
+    title: "Retainmaxxing",
+    description: "A study tool for the 21st century.",
+    image: "https://www.retainmaxxing.pro/favicon.svg",
+    url: "https://www.retainmaxxing.pro",
+    tags: ["Study Tool", "React", "Capacitor", "FastAPI", "AI"],
+
+  },
+
     {
-    title: "Hack Forsyth 2025",
-    description: "Created the website and backend registration system for the Hack Forsyth 2025 hackathon.",
+    title: "Hack Forsyth",
+    description: "Creating the website and backend registration system for the Hack Forsyth 2025 and 2026 hackathon.",
     image: "/assets/hackforsyth.png",
     url: "https://hackforsyth.com",
     tags: ["React", "Micronaut", "Java"],
@@ -21,8 +36,16 @@ const projects = [
     description: "A room occupancy analyzer using IoT. Already implemented in a public library, looking to expand to more locations.",
     image: "/assets/bmap.png",
     url: "https://busymap.org",
-    tags: ["React", "IoT", "Embedded", "Java", "Spring Boot"],
+    tags: ["React", "IoT", "Embedded", "Java", "Spring Boot", "AI"],
   },
+  {
+    title: "LineOnTime",
+    description: "An application / sensor system for parents to track and monitor when to pickup their child from school car lines.",
+    image: "/assets/lineontime.png",
+    url: "https://lineontime.example.com",
+    tags: ["React", "IoT", "Embedded", "FastAPI", "AI"],
+    circleImage: true,
+  }
 ];
 
 function Projects() {
@@ -92,7 +115,7 @@ function Projects() {
             <img
               src={project.image}
               alt={project.title}
-              className="rounded-lg mb-4 mx-auto max-h-48 object-contain"
+              className={`mb-4 mx-auto max-h-48 object-contain ${project.circleImage ? 'rounded-full' : ' '}`}
             />
             <h3 className="text-xl font-bold mb-2">{project.title}</h3>
             <p className="text-gray-500">{project.description}</p>
@@ -109,6 +132,8 @@ function Projects() {
                 </span>
               ))}
             </div>
+            {
+              project.url && (
             <a
               href={project.url}
               target="_blank"
@@ -117,6 +142,7 @@ function Projects() {
             >
               View Project
             </a>
+            )}
           </div>
         ))}
       </div>
