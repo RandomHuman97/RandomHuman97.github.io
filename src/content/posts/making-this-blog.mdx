@@ -1,4 +1,10 @@
-<!--How I threw together this mess of a blog--> 
+---
+title: "Making This Blog"
+date: 2025-08-15
+description: "How I threw together this mess of a blog"
+postSlug: "2025-8-15-Making This Blog"
+---
+
 <h2>This Works!</h2>
 <p>I finally decided to make a blog just to jot down my thoughts and stuff I've learned.</p>
 <p>But instead of actually planning things out and setting up proper infrastructure, I ended up throwing everything together in an all-nighter.</p>
@@ -13,7 +19,7 @@
 
 <p>I'm kind of lazy and didn't really want to use/learn a full-blown CMS</p>
 <i>All I wanted was something simple to write blog posts.</i>
-<br/>
+<br />
 <p>Since I'm already familiar with React and enjoy working with JSX, I figured that'd be the way to go. Now, the question was: what should I use to display and format these blog posts?</p>
 <h2>(Maybe) Reinventing the Wheel?</h2>
 <p>I initially thought about using Markdown since it's pretty straightforward and widely used for blogs. However, I quickly realized that it took more than 10 minutes to implement, and thus my laziness prevailed.</p>
@@ -21,10 +27,10 @@
 
 <p>I definitely didn't want to create a new component for each blog post, and I also wanted to include metadata (like the post's description and date).</p>
 
-<p>Fortunately, Node.js has this super handy tool for running scripts (I mean it's kind of the whole point of it, I just don't use it for that ever).
-</p>
+<p>Fortunately, Node.js has this super handy tool for running scripts (I mean it's kind of the whole point of it, I just don't use it for that ever).</p>
 <p>So, I figured I could write a simple script that reads through every “raw” HTML file, grabs the creation date, and extracts the metadata from a comment (hacky, but it works).</p>
-<pre><code>
+
+```js
 files.forEach(file => {
     if (file.endsWith('.html')) {
         const fullPath = path.join(postsDir, file);
@@ -40,7 +46,7 @@ files.forEach(file => {
         });
     }
 });
-</code></pre>
+```
 
 <p>Now, here's the thing: I use Tailwind, and I want my “barebones” HTML to at least look decent. Fortunately, Tailwind has a fantastic tool for this: <b>prose</b>. Essentially (at least, as far as I understand), it's a set of styles that help make vanilla HTML documents look sleek and polished.</p>
 <p>And it works!</p>

@@ -1,0 +1,68 @@
+---
+import { getCollection } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+
+type PostSummary = {
+  id: number;
+  title: string;
+  date: Date;
+  firstLine: string;
+  path: string;
+};
+
+const entries: CollectionEntry<'posts'>[] = await getCollection('posts');
+const posts: PostSummary[] = entries
+  .map((post: CollectionEntry<'posts'>, index: number): PostSummary => ({
+    id: index + 1,
+    title: post.data.title,
+    date: post.data.date,
+    firstLine: post.data.description,
+    path: post.data.postSlug,
+  }))
+  .sort((a: PostSummary, b: PostSummary) => b.date.valueOf() - a.date.valueOf());
+
+const formatDate = (date: Date) =>
+  date.toLocaleDateString(undefined, {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  });
+---
+
+<section class="bg-dark text-darkest p-12 flex flex-col justify-center max-w-5xl mx-auto mt-5 rounded-3xl" data-search-filter>
+  <div class="relative w-full mb-10">
+    <div class="absolute inset-y-0 left-0 flex items-center pl-4">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8" />
+        <path d="m21 21-4.3-4.3" />
+      </svg>
+    </div>
+    <input
+      type="text"
+      class="w-full py-3 pl-12 pr-4 rounded-full bg-light text-darkest placeholder:text-darkest/60 focus:outline-none focus:ring-2 focus:ring-blue-400 shadow-md transition-all"
+      placeholder="Search Blog Posts"
+      data-search-input
+    />
+  </div>
+
+  <div class="space-y-4 w-full">
+    {posts.map((post: PostSummary) => (
+      <a 
+        class="p-5"
+        href={`/posts/${post.path}`}
+        data-search-item
+        data-search-text={`${post.title} ${post.firstLine}`.toLowerCase()}
+      >
+        <div
+          class="bg-light w-full rounded-2xl p-5 shadow-xl shimmer transition"
+        >
+          <h3 class="text-xl font-bold">{post.title}</h3>
+          {post.date && (
+            <p class="text-gray-500">{formatDate(post.date)}</p>
+          )}
+          <p class="text-darker">{post.firstLine}</p>
+        </div>
+      </a>
+    ))}
+  </div>
+</section>
