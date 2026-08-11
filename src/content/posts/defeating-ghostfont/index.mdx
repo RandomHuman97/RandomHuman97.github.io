@@ -1,0 +1,122 @@
+---
+title: "Defeating Ghost Font"
+date: 2026-08-11
+description: "How I wrote a fast C++ project to enable OCR to process temporal-motion typography"
+postSlug: "2026-8-11-defeating-ghost-font"
+---
+import GhostFontExample from "./ghostfont.gif";
+
+*(please be aware,  I am by no means critiquing ghost font or anything, I just wanted to write a parser for it)*
+
+## Background
+You may have seen news articles and videos about a font that is "impossible" for AI to read.
+
+Generally, these articles are referring to [Ghost Font](https://www.mixfont.com/ghost-font), a type of temporal-motion typography designed to be challenging for OCR systems to process.
+In short it just means the font uses moving noise in opposing directions to make an image that only appears when it is played back.
+
+Thus, traditional image-based OCR systems struggle to recognize the text as they have no *sense* of motion.
+
+Here's an example:
+<img src={GhostFontExample.src} alt="Example of Ghost Font"/>
+
+It's a little bit difficult but you can still make out the text.
+
+However, if given a single random frame from the animation, it just looks like noise :(
+![Single random frame of Ghost Font](jstnoise.png)
+
+Now, to humans, the text is still readable because our brains can just "see" the motion.
+
+However, for OCR / AI systems *(which afaik primarily rely on static images)*, the noise is impossible to discern.
+
+## My Plan
+
+I set out with one main goal, to create a parser that could decipher Ghost Font.
+
+Now, I did have an additional goal tacked on to that, which was to make it fast.
+I was really enjoying using C++ to write my own personal game, and it's also a very fast language (if you aren't shooting yourself in the foot), so I decided to use it for this project.
+
+Best of all, I had **absolutely no experience**  with motion estimation or video processing. (great project idea)
+
+## Extracting the frames
+
+
+The first challenge was figuring out how to even extract the frames.
+I *could* just wrap ffmpeg, but considering I needed speed, I wanted a faster approach.
+
+This faster approach was to actually just use LibAV, the underlying library that ffmpeg is built on. 
+Given that it's written in C, interfacing with it from my program was effortless.
+Learning it was not so effortless, but after a few hours I succesfully had a working frame grabber!
+
+I chose to wrap LibAV in my own simple C++ class since I really just needed a few consistent behaviors.
+I really ended up liking this approach, as it was fun to use, and got me a lot more comfortable with C++ objects *(which are weird)*.
+
+```cpp 
+// example snippet to showcase my approach
+const VideoFrames videoFrames(filename);
+
+videoFrames.getNextFrame(); // hack bcz ghost font starts blank
+const FrameData firstFrame = videoFrames.getNextFrame();
+const FrameData secondFrame = videoFrames.getNextFrame();
+```
+
+However, this was just a tiny portion of what I needed to get done.
+
+## Motion Estimation pt. 1
+
+Motion estimation is a very complex topic with a lot of well proven techniques and algorithms.
+
+However, because I'm going for speed *(my approach may actually be slower, have to benchmark)*, and writing this to learn, I decided to implement my own motion-estimation system from scratch.
+
+I decided to simply loop over every pixel and check how similar it was to the surrounding pixels in the next frame.
+The idea behind this was that moving noise would *have* to have moving pixels, so thus if I just tracked where each pixel was going I could get motion vectors.
+
+```
+ooo
+oxo <-- pixel, compares similarity with neighboring pixels of the next frame
+ooo
+```
+
+```cpp
+// stub is a bit more complex because we have to deal with rgb
+constexpr int channels = 3;
+const int stride = firstFrame.width * channels;
+for (int y = 1; y < firstFrame.height - 1; ++y) {
+    for (int x = 1; x < firstFrame.width - 1; ++x) {
+        for (int channel = 0; channel < channels; ++channel) {
+            const auto i = static_cast<size_t>(y * stride + x * channels + channel);
+            directionX[i] = static_cast<int16_t>(similarity(firstFrame.rgbPixels[i - channels], secondFrame.rgbPixels[i - channels]))
+                - static_cast<int16_t>(similarity(firstFrame.rgbPixels[i + channels], secondFrame.rgbPixels[i + channels]));
+            directionY[i] = static_cast<int16_t>(similarity(firstFrame.rgbPixels[i - stride], secondFrame.rgbPixels[i - stride]))
+                - static_cast<int16_t>(similarity(firstFrame.rgbPixels[i + stride], secondFrame.rgbPixels[i + stride]));
+        }
+    }
+}
+```
+
+I also decided to incorporate a nice optimization I had learned from my experience build a Conway's Game of Life clone, padding.
+
+
+In this case it was not so much padding, as it was just ignoring the outer borders of the image *(since they were likely to not be significant at only 1px)*
+This optimizes the code by removing the need for costly bounds checks, where I would have to run at minimum 8 comparisons per pixel.
+
+
+Now, with the simple motion estimation in place, I decided to quickly just run it on a sample Ghost Font image and output the motion vectors.
+
+![Random noise that does not look like text](direction_y.jpg)
+
+Yikes, that does NOT look like the text I need for OCR to work.
+
+The simple motion estimation approach is doing this due to it's limited pixel size.
+Thus, any noise can trip up the motion estimation, leading to junk motion vectors.
+
+## Motion Estimation pt. 2
+At this point I considered just giving up, since I geniunely had no idea what other approach I could implement myself.
+
+However, while at work an idea popped up into my head.
+
+*if the motion estimation is failing due to the limited pixel size, maybe I need to consider larger blocks of pixels instead of individual ones?*
+
+Thus, I started work on a new motion estimation approach that used "blocks" of pixels rather than individual ones.
+
+
+UNDER CONSTRUCTION... 
