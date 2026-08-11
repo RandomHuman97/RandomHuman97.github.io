@@ -118,5 +118,126 @@ However, while at work an idea popped up into my head.
 
 Thus, I started work on a new motion estimation approach that used "blocks" of pixels rather than individual ones.
 
+In short, I essentially just compare the total "similarity score" of each block of pixels to it's adjacent neighbors, much like the pixel solution before but instead using blocks.
+However, checking adjacent pixels was not enough range, as noise could still move farther than this one pixel limit.
 
-UNDER CONSTRUCTION... 
+Thus, I introduced a search-range parameter to set how far each block could search.
+```cpp
+inline int16_t bestVerticalShiftBlock(const uint8_t* first, const uint8_t* second, const int stride, const int blockSize, const int searchRadius) {
+    int16_t bestDy = static_cast<int16_t>(-searchRadius);
+    int bestDiff = stampDiffBlock(first, second, stride, -searchRadius, blockSize, std::numeric_limits<int>::max());
+
+    for (int16_t dy = static_cast<int16_t>(-searchRadius + 1); dy <= searchRadius; ++dy) {
+        const int diff = stampDiffBlock(first, second, stride, dy, blockSize, bestDiff);
+        if (diff < bestDiff) {
+            bestDiff = diff;
+            bestDy = dy;
+        }
+    }
+
+    return bestDy;
+}
+```
+
+And, upon running various different combinations of block sizes and search radii, I was finally able to get an image!
+![A clearer image that says "TEST"](success.jpg)
+
+## Dynamic Search Radius Adjustment
+
+However, I now had a new problem.
+
+Ghost Font lets users input varying noise speeds, which means that I would have to adjust the search radius dynamically.
+
+This is due to the fact that having too low of a search radius proved to just output noise like this:
+![An image showing the effect of too low of a search radius](low_search_radius.jpg)
+While having too high of a search radius introduced way too much noise and inaccuracies:
+![An image showing the effect of too high of a search radius](high_search_radius.jpg)
+*you can also see the fake text designed to trip up LLM's which is pretty cool*
+
+Therefore, I had to devise a way to perfectly adjust the search radius to an optimal value.
+
+Now, while I can see what makes an image clear or noisy, I had no idea how to implement this within code.
+
+I ended up settling on comparing the 90th and 10th percentiles of block similarity scores.
+The block similarity score essentially just checks how similar a block is to it's neighbors.
+As you can imagine, noise has very high variability while actual text tends to have much lower variability.
+
+Thus, by comparing the 90th (low variability) and 10th (high variability) percentiles of block similarity scores, I could determine "how noisy" an output was programatically.
+
+With this approach, I could then just abuse the fact that my code is somewhat fast to increment the search radii until it found the first peak in "non-noisyness".
+
+```cpp
+for (int searchRadius = 5; searchRadius < 20; ++searchRadius) {
+        // specify blank filename so we dont emit image
+        DirectionResult direction = runDirection(firstFrame,secondFrame,blockSize,searchRadius,"");
+        
+        double varianceValue = calculateDirectionYVarianceRatio(direction.directionY, direction.width, direction.height);
+        
+        if (varianceValue > 5) { // rough threshold, a bit messy but good for now
+            std::println("Found good candidate!");
+            // write output image
+            writeDirectionPpm(outputFilename, direction.directionY, direction.width, direction.height, searchRadius);
+            return;
+        }
+    }
+```
+
+This worked shockingly well, taking less than a second to find the optimal search radius!
+```
+$ time ./defeatghostfont -a testex.webm 
+
+Opening: testex.webm
+Variance for sr 5: 1.2668175681042013
+Variance for sr 6: 1.24119058794357
+Variance for sr 7: 1.2450304327673691
+Variance for sr 8: 1.2831286918431009
+Variance for sr 9: 1.2917653759232217
+Variance for sr 10: 1.3233922855277158
+Variance for sr 11: 2.0212594356659053
+Variance for sr 12: 398.3973772283314
+Found good candidate!
+OCR RESULT: TEST
+
+
+real    0m0.339s <---  fast!
+user    0m0.303s
+sys     0m0.050s
+```
+
+I did also find that using block sizes of 8 worked as a perfect middle ground between low noise and high detail.
+
+Now that I have a reliable method to extract the text from Ghost Font, all that was left was OCR.
+
+## OCR
+Because I am no where near smart enough to implement my own OCR solution, I decided on just using a preexisting libary for that step.
+
+The most popular OCR library by far is Tesseract. Due to it being written in C++, it also has excellent interop *(duh)* with C++ projects.
+
+This made it trivial to add it to my project.
+
+```cpp
+tesseract::TessBaseAPI api;
+//initialize the api
+if (api.Init(nullptr, "eng") != 0) {
+    throw std::runtime_error("Could not initialize Tesseract OCR");
+}
+
+//ghost font only uses these specific characters, so we can only include them to improve accuracy
+api.SetVariable("tessedit_char_whitelist",
+    "QWERTYUGIOPASDFHJKLZXCVBNM!&?,.'-1234567890 \n"
+    );
+api.SetPageSegMode(tesseract::PSM_SINGLE_BLOCK);
+api.SetImage(pix.get());
+//custom deleter class
+std::unique_ptr<char[], TessTextDeleter> outText(api.GetUTF8Text());
+
+api.End();
+
+return {outText.get()};
+```
+
+I did also utilize one of it's dependencies, Leptonica, for a quick denoiser + resize pass before OCR for better accuracy.
+
+*the original image*
+![The original image, a bit noisy]
+
