@@ -1,5 +1,5 @@
 ---
-import { getCollection } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 
@@ -17,7 +17,7 @@ type Props = {
 };
 
 const { post } = Astro.props as Props;
-const { Content } = await post.render();
+const { Content } = await render(post);
 ---
 
 <Base title={post.data.title}>
