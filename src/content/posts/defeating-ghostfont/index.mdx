@@ -196,7 +196,6 @@ Variance for sr 10: 1.3233922855277158
 Variance for sr 11: 2.0212594356659053
 Variance for sr 12: 398.3973772283314
 Found good candidate!
-OCR RESULT: TEST
 
 
 real    0m0.339s <---  fast!
@@ -239,5 +238,56 @@ return {outText.get()};
 I did also utilize one of it's dependencies, Leptonica, for a quick denoiser + resize pass before OCR for better accuracy.
 
 *the original image*
-![The original image, a bit noisy]
+![The original image, a bit noisy](denoiseinitial.jpg)
 
+*denoised + resized (resized doesn't really show on the blog since scaled up either way)*
+![Denoised and resized image](ocr.png)
+
+It was a bit hard finding the perfect denoising amount, so I had to deal with the little "nibbles" in the characters, but it made OCR perform much better so I don't mind.
+
+Running the final product provided great results for videos with less text.
+```text
+$ ./defeatghostfont testex.webm direction_y.ppm -a
+Opening: testex.webm
+Variance for sr 5: 1.2668175681042013
+...
+Variance for sr 12: 398.3973772283314
+Found good candidate!
+OCR RESULT: TEST
+```
+
+But it definitely struggled on videos with lots of text / non-alphanumeric characters.
+```text
+original string ---> "THIS IS A LONG MESSAGE!'PP.,.,.,.,.."
+
+$ ./defeatghostfont harder.webm direction_y.ppm -a -b 10
+Opening: harder.webm
+Variance for sr 5: 1.2890841173215275
+...
+Variance for sr 15: 721.3278463648834
+Found good candidate!
+OCR RESULT: THIF 18 & LONG <--- yikes
+MERSAGE VPF.,.
+```
+
+Feeding the OCR image to Gemini yielded a slightly better result, but it still mistook the characters for corrupted noise.
+![
+Gemini OCR result : Based on the image provided, here is what the pixelated text reads:
+Line 1: THIS IS A LONG
+Line 2: MESSAGE I'M... (followed by distorted/glitched pixel noise)
+Line 3: (Corrupted/pixelated characters/numbers)
+](airesponse.png)
+
+## Conclusion
+
+While OCR isn't perfect and can especially struggle with noiser images, it is much faster and essentially free compared to utilizing AI.
+*(although to be fair, the whole point of this project was enabling AI to read the font)*
+
+I would **definitely** call it a success compared to feeding the raw video data to an AI however.
+
+![The AI struggling with the raw video](aidumb.png)
+
+In the future, I could definitely improve the performance by making the program multithreaded, since right now it just hammers a single core.
+I also could experiment with different denoising techniques to further improve OCR accuracy.
+
+All in all however, this was a very fun passion project and I learned a lot along the way.
