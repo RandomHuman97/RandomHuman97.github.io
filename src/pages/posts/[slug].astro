@@ -19,6 +19,12 @@ type Props = {
 const { post } = Astro.props as Props;
 const { Content } = await render(post);
 const postUrl = new URL(Astro.url.pathname, Astro.site);
+const formatDate = (date: Date) =>
+  date.toLocaleDateString(undefined, {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  });
 
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -26,6 +32,7 @@ const jsonLd = {
   headline: post.data.title,
   description: post.data.description,
   datePublished: post.data.date.toISOString(),
+  ...(post.data.updated && { dateModified: post.data.updated.toISOString() }),
   url: postUrl.toString(),
   author: {
     '@type': 'Person',
@@ -41,6 +48,10 @@ const jsonLd = {
   <section class="bg-dark text-darkest p-12 max-w-5xl mx-auto mt-5 rounded-2xl ">
     <div class="max-w-4xl mx-auto prose-lg prose-h1:font-bold prose-h2:font-bold">
       <h1 class="">{post.data.title} </h1>
+      <p class="text-darker">
+        Published {formatDate(post.data.date)}
+        {post.data.updated && <> | Updated {formatDate(post.data.updated)}</>}
+      </p>
       <hr class="h-px my-8 border-0 bg-darkest" />
       <div class="post-content mx-auto">
         <Content />
