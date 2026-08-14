@@ -292,3 +292,29 @@ In the future, I could definitely improve the performance by making the program 
 I also could experiment with different denoising techniques to further improve OCR accuracy.
 
 All in all however, this was a very fun passion project and I learned a lot along the way.
+
+## Update - 8/13/26
+
+Turns out multithreading was actually REALLY easy.
+
+And by really easy, I mean the commit literally only added *2 lines* *(1 line if not counting build system changes)* of code to enable multithreading.
+```cpp diff
+#pragma omp parallel for schedule(dynamic) // <---- LITERALLY JUST THIS
+
+    for (int blockY = 0; blockY < directionHeight; ++blockY) {
+        const int y = paddedFirstFrame.yPad + blockY * blockSize;
+        for (int blockX = 0; blockX < directionWidth; ++blockX) {
+            ... //more code here
+```
+Just through testing on my 8-thread 9600x CPU, it easily pushes the bottleneck away from the actual pixel solving stage, towards the I/O and OCR.
+*(will add flame graphs later)*
+
+This was all possible through OpenMP, *(a high-level runtime?)* which essentially just allows me to put a macro to run loops in a thread pool.
+I was already pretty familiar with thread pools from my work with Spring Boot and Java, so it didn't seem too "magical" to me.
+
+Although, I may also look into instead using one thread per image / step size solver, rather than batching each block.
+I will still have to benchmark and see if it's faster, but it could potentially offer even better parallelism and performance.
+
+However it may also be worth seeing if I can optimize the I/O + OCR, since I really haven't looked into that.
+
+Overall though, I am very happy with the performance improvements achieved through a tiny code change.
