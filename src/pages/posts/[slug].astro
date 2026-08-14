@@ -18,9 +18,26 @@ type Props = {
 
 const { post } = Astro.props as Props;
 const { Content } = await render(post);
+const postUrl = new URL(Astro.url.pathname, Astro.site);
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: post.data.title,
+  description: post.data.description,
+  datePublished: post.data.date.toISOString(),
+  url: postUrl.toString(),
+  author: {
+    '@type': 'Person',
+    name: 'Nicholas Karneyenka',
+  },
+};
 ---
 
 <Base title={post.data.title} description={post.data.description}>
+  <!-- json ld data -->
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
   <section class="bg-dark text-darkest p-12 max-w-5xl mx-auto mt-5 rounded-2xl ">
     <div class="max-w-4xl mx-auto prose-lg prose-h1:font-bold prose-h2:font-bold">
       <h1 class="">{post.data.title} </h1>
