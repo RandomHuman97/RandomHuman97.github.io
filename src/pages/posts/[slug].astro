@@ -20,7 +20,7 @@ const { post } = Astro.props as Props;
 const { Content } = await render(post);
 ---
 
-<Base title={post.data.title}>
+<Base title={post.data.title} description={post.data.description}>
   <section class="bg-dark text-darkest p-12 max-w-5xl mx-auto mt-5 rounded-2xl ">
     <div class="max-w-4xl mx-auto prose-lg prose-h1:font-bold prose-h2:font-bold">
       <h1 class="">{post.data.title} </h1>
