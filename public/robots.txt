@@ -1,0 +1,4 @@
+User-agent: *
+Disallow:
+
+Sitemap: https://human97.com/sitemap-index.xml
