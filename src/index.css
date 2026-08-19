@@ -18,3 +18,15 @@ body{
 html {
   scroll-behavior: smooth;
 }
+.post-content pre {
+  border-radius: 1rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+
+}
+.post-content img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 1rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
